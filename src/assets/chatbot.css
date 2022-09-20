@@ -186,11 +186,11 @@
 }
 .chat-app_content::-webkit-scrollbar {
   width: 0.5em;
-  background-color: transparent;
+  background-color: #00000047;
 }
 .chat-app_content::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background-color: #ededed;
+  background-color: #141e3063;
 }
 .chat-app_content .messages {
   display: flex;
@@ -233,7 +233,7 @@
 .chat-app_content .message.reply {
   margin-left: 0;
   margin-right: 2em;
-  background: #ededed;
+  background: #cbc2c2;
   color: #141E30;
   transform-origin: 0 100%;
 }
@@ -242,7 +242,7 @@
   left: -1em;
   -webkit-clip-path: polygon(100% 0, 25% 100%, 100% 100%);
           clip-path: polygon(100% 0, 25% 100%, 100% 100%);
-  background: #ededed;
+  background: #cbc2c2;
   transform: skewY(-15deg);
 }
 
