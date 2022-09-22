@@ -546,3 +546,58 @@
   animation: floatup .5s forwards;
 }
 
+.btnOptions{
+  border-radius: 50px;
+  padding: 10px 10px;
+  background-color: #0a4b98;
+  color: white;
+  margin: 5px 5px 0px 0px;
+  border: none;
+  display: table;
+  margin-right: auto;
+  margin-left: auto;
+  cursor: pointer;
+}
+
+
+/**
+ * ==============================================
+ * Dot Typing
+ * ==============================================
+ */
+ .dot-typing {
+  margin:15px 0px 15px 20px;
+  position: relative;
+  left: -9999px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #59585e;
+  color: #59585e;
+  box-shadow: 9984px 0 0 0 #59585e, 9999px 0 0 0 #59585e, 10014px 0 0 0 #59585e;
+  animation: dotTyping 0.8s infinite linear;
+}
+
+@keyframes dotTyping {
+  0% {
+    box-shadow: 9984px 0 0 0 #59585e, 9999px 0 0 0 #59585e, 10014px 0 0 0 #59585e;
+  }
+  16.667% {
+    box-shadow: 9984px -10px 0 0 #59585e, 9999px 0 0 0 #59585e, 10014px 0 0 0 #59585e;
+  }
+  33.333% {
+    box-shadow: 9984px 0 0 0 #59585e, 9999px 0 0 0 #59585e, 10014px 0 0 0 #59585e;
+  }
+  50% {
+    box-shadow: 9984px 0 0 0 #59585e, 9999px -10px 0 0 #59585e, 10014px 0 0 0 #59585e;
+  }
+  66.667% {
+    box-shadow: 9984px 0 0 0 #59585e, 9999px 0 0 0 #59585e, 10014px 0 0 0 #59585e;
+  }
+  83.333% {
+    box-shadow: 9984px 0 0 0 #59585e, 9999px 0 0 0 #59585e, 10014px -10px 0 0 #59585e;
+  }
+  100% {
+    box-shadow: 9984px 0 0 0 #59585e, 9999px 0 0 0 #59585e, 10014px 0 0 0 #59585e;
+  }
+}
