@@ -14,19 +14,19 @@ export class ChatbotComponent implements OnInit {
     this.sound.play();
   }
 
+  // Diccionario de preguntas y respuestas predefinidas
   respuestas = new Map([
-    ['hola', 'Hola, en que necesitas ayuda?'],
-    ['buenos dias', 'Buenos días, en que necesitas ayuda?'],
-    ['buenas tardes', 'Buenas tardes, en que necesitas ayuda?'],
-    ['buenas noches', 'Buenas noches, en que necesitas ayuda?'],
+    ['hola', { mensaje: "Hola, soy el Bot de Numrot, y estoy aquí para ayudarte, ¿en que necesitas ayuda?", opciones: ["Iniciar sesión", "Quiero ser comercializador ✋"] }],
+    
+    // imagenes
+    ['Recuperar contraseña', { mensaje: "Nos alegra que estés aquí 🤠 Dejanos tus datos en el siguiente formulario para comunicarnos contigo ⬇️", imgs: [{descripcion:"Haga clic sobre '¿Olvidó su contraseña'", url:"assets/chatbotImagenes/recuperarcontraseña1.jpg"}, {descripcion:"Ingrese el correo asociado a su usuario y hagaclic en el botón enviar'", url:"assets/chatbotImagenes/recuperarcontraseña2.png"}] }],
 
-    ['gracias', 'Con gusto! 😊'],
-    ['muchas gracias', 'Siempre es un gusto! 👌'],
-
-    ['hasta luego', 'Ha sido un placer, hasta luego!'],
-    ['bye', 'Ha sido un placer, hasta luego!'],
-    ['chao', 'Ha sido un placer, hasta luego!'],
-    ['fin', 'Ha sido un placer']
+    ['quiero vender', { mensaje: "Nos alegra que estés aquí 🤠 Dejanos tus datos en el siguiente formulario para comunicarnos contigo ⬇️", enlace: "https://habicicletas.com/quieres-ser-comercializador/" }],
+    ['Quiero ser comercializador ✋', { mensaje: "Nos alegra que estés aquí 🤠 Dejanos tus datos en el siguiente formulario para comunicarnos contigo ⬇️", enlace: "https://habicicletas.com/quieres-ser-comercializador/" }],
+    ['Iniciar sesión', { mensaje: "Qué deseas hacer?", opciones: ["Registrarme", "Recuperar usuario", "Recuperar contraseña"] }],
+    ['gracias', { mensaje: "Con gusto 👌"}],
+    ['muchas gracias', { mensaje: "Ha sido un placer 👌"}],
+    ['chao', { mensaje: "Hasta pronto 👋"}]
   ]);
 
   constructor(private botResponseService: BotResponseService) { }
@@ -70,10 +70,11 @@ export class ChatbotComponent implements OnInit {
             // recuperar el texto del mensaje
             let texto = (<HTMLInputElement>document.getElementsByClassName('chat-input')[0]).value
             let msg = texto.toLowerCase().trim();
-            this.sendMessage(msg);
+            if (msg != "") {
+              this.sendMessage(msg);
+            }
           }
         });
-        
 
         // activar chat 
         window.LIVE_CHAT_UI = true
@@ -82,23 +83,21 @@ export class ChatbotComponent implements OnInit {
 
   }
 
-  sendMessage(msg:any) {
+  sendMessage(msg: any) {
+    // mostrar el mensaje enviado en la conversacion
+    this.generateParrafo(msg, "same");
+
+    // colocar animación de cargando
+    this.setLoading()
+
+    //Solicitar una respuesta al mensaje del usuario
+    let res = this.getBotResponse(msg);
     
-
-    if (msg != "") {
-
-      this.generateParrafo(msg, "same");
-      this.setLoading()
-
-      let res = this.getBotResponse(msg);
-      setTimeout(() => {
-        this.generateParrafo(res, "reply");
-      }, 3000);
-
-    }
+    setTimeout(() => {
+      this.generateParrafo(res, "reply");
+    }, 3000);
 
   }
-
 
   generateParrafo(msg: any, type: string) {
     // crear el parrafo del mensaje
@@ -111,99 +110,115 @@ export class ChatbotComponent implements OnInit {
     if (type == "reply") {
       p.innerHTML = msg.mensaje;
       Template.setAttribute("class", "message reply fade-in");
-      let contentOpcion = document.createElement("div");
-      contentOpcion.setAttribute("style","margin-top: 5px; width: inherit;");
+      let itemsRes = document.createElement("div");
+      itemsRes.setAttribute("style", "margin-top: 5px; width: inherit;");
+
+      if(msg.imgs){
+
+        msg.imgs.map((element:any) =>{
+          // const divDescrpcion = document.createElement("div");
+          // const divImagenes = document.createElement("div");
+
+          const descripcion = document.createElement("p");
+          descripcion.innerHTML=element.descripcion;
+
+          const imgRes = document.createElement("img");
+          imgRes.setAttribute("src", element.url)
+          imgRes.setAttribute("width", "100%")
+
+          // divDescrpcion.appendChild(descripcion);
+          // divImagenes.appendChild(imgRes);
+
+          this.insertIntoChat(descripcion);
+          this.insertIntoChat(imgRes);
+        }
+
+        )
+
+      }
 
       if (msg.opciones) {
         msg.opciones.map((element: any) => {
           let opcion = document.createElement("button");
-          opcion.innerHTML = element.opcion
-          opcion.setAttribute("id", element.id);
+
+          opcion.innerHTML = element
+          opcion.setAttribute("id", element);
           opcion.setAttribute("class", "btnOptions");
-          opcion.addEventListener("click", (event:any)=>{
-            const optionSelected=event.target
-            let option=optionSelected.getAttribute("id");
+          opcion.addEventListener("click", (event: any) => {
+            const optionSelected = event.target
+            let option = optionSelected.getAttribute("id");
             optionSelected.parentNode.remove();
-        
+
             this.sendMessage(option);
-        
           })
-          contentOpcion.appendChild(opcion)
-          Template.appendChild(contentOpcion);
+          itemsRes.appendChild(opcion)
         })
+        Template.appendChild(itemsRes);
       }
 
       if (msg.enlace) {
         let link = document.createElement("a");
         link.setAttribute("href", msg.enlace)
-        link.innerHTML=msg.enlace
-        contentOpcion.appendChild(link)
-        // this.sendMessage(link);
-        Template.appendChild(contentOpcion);
+        link.setAttribute("target", "_blank")
+        link.innerHTML = msg.enlace
+
+        itemsRes.appendChild(link)
+        Template.appendChild(itemsRes);
       }
-      
+
+      // quitar la animacion de carga y reproducir sonido de respuesta o nuevo mensaje
       this.deleteLoading();
       this.reproducir()
+
+
       Template.appendChild(p);
+
+      this.insertIntoChat(Template)
+      this.insertIntoChat(itemsRes)
       
-      // agregar el mensaje al chatbot
-      let box_message = document.getElementById('box_message');
-      box_message?.appendChild(Template);
-      box_message?.appendChild(contentOpcion);
-
-    } else if (type == "loadding") {
-      p.innerHTML = msg;
-      p.setAttribute("id", "fakeMessage");
-      Template.appendChild(p);
-      // agregar el mensaje al chatbot
-      let box_message = document.getElementById('box_message');
-      box_message?.appendChild(Template);
-      (<HTMLInputElement>document.getElementsByClassName('chat-app_content')[0]).scrollTop = (<HTMLInputElement>document.getElementsByClassName('messages')[0]).offsetHeight
-      return
-
     } else {
       p.innerHTML = msg;
       Template.setAttribute("class", "message fade-in");
       Template.appendChild(p);
-      // agregar el mensaje al chatbot
-      let box_message = document.getElementById('box_message');
-      box_message?.appendChild(Template);
+      this.insertIntoChat(Template)
     }
+    
+  }
 
-
+  // insertar elemento en la conversacion
+  insertIntoChat(element:any){
+    // agregar el mensaje al chatbot
+    let box_message = document.getElementById('box_message');
+    box_message?.appendChild(element);
     // limpiar el input y bajar el scroll
     (<HTMLInputElement>document.getElementsByClassName('chat-input')[0]).value = "";
     (<HTMLInputElement>document.getElementsByClassName('chat-app_content')[0]).scrollTop = (<HTMLInputElement>document.getElementsByClassName('messages')[0]).offsetHeight
   }
 
-  
-
   getBotResponse(quest: any) {
 
-    // if (this.respuestas.get(quest)) {
-    //   return this.respuestas.get(quest)
-    // }
+    if (this.respuestas.get(quest)) {
+      return this.respuestas.get(quest)
+    }
 
     switch (quest) {
-      case "Consultar cartera": return this.botResponseService.comoIniciarSesion();
-        break;
 
-      case "hola": return { mensaje: "Hola, soy el Bot de Numrot, y estoy aquí para ayudarte, ¿en que necesitas ayuda?" }
-      case "gracias": return { mensaje: "Ha sido un placer 😊" }
-      case "Quiero ser comercializador ✋": return { mensaje: "Nos alegra que estés aquí 🤠 Dejanos tus datos en el siguiente formulario para comunicarnos contigo ⬇️", enlace: "https://habicicletas.com/quieres-ser-comercializador/" }
-      default: return {
-        mensaje: "No tengo una respuesta para esta pregunta, por favor elije una de las siguientes opciones:", opciones: [{ id: "Iniciar sesión", opcion: "Iniciar sesión" }, { id: "Quiero ser comercializador ✋", opcion: "Quiero ser comercializador ✋" }]
-      }
-        break;
+      case "Consultar cartera": 
+        return this.botResponseService.comoIniciarSesion();
+
+      default: return { mensaje: "No tengo una respuesta para esta petición, por favor elije una de las siguientes opciones:", opciones: ["Iniciar sesión", "Quiero ser comercializador ✋"]}
+    
     }
+
   };
 
-  // loading
+
+
+  // colocar y quitar animación de escribiendo / cargando
   setLoading() {
-    // this.generateParrafo("...", "loadding");
     let loadding = document.createElement("div");
-    loadding.setAttribute("id","fakeMessage");
-    loadding.innerHTML=`<div class="container">
+    loadding.setAttribute("id", "fakeMessage");
+    loadding.innerHTML = `<div class="container">
                           <div class="col-3">
                               <div class="" data-title=".dot-typing">
                                 <div class="stage">
@@ -212,10 +227,8 @@ export class ChatbotComponent implements OnInit {
                               </div>
                           </div>
                         </div>`
-    // insert into the dom
-    let box_message = document.getElementById('box_message');
     setTimeout(() => {
-      box_message?.appendChild(loadding);
+      this.insertIntoChat(loadding);
       (<HTMLInputElement>document.getElementsByClassName('chat-app_content')[0]).scrollTop = (<HTMLInputElement>document.getElementsByClassName('messages')[0]).offsetHeight
     }, 1000);
   }
@@ -223,6 +236,5 @@ export class ChatbotComponent implements OnInit {
     let fakeMessage = document.querySelector("#fakeMessage");
     fakeMessage?.remove();
   }
-
 
 }
