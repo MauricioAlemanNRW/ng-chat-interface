@@ -7,14 +7,15 @@
 
 
 .chat-app {
+  z-index: 10000;
   font-size: 18px;
   line-height: 1.25;
   font-family: "Roboto", sans-serif;
   height: 595px;
   width: 360px;
   position: fixed;
-  bottom: 10px;
-  right: 32px;
+  bottom: 30px;
+  right: 22px;
   color: #141E30;
 }
 
@@ -276,7 +277,7 @@
 }
 
 .chat-app_footer {
-  background: linear-gradient(to right, #00c6ff, #0072ff);
+  background: linear-gradient(to right, #0066ff, #0072ff);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 1.5em;
   padding-top: 0.75em;
@@ -604,59 +605,27 @@
   }
 }
 
-#modalContent{
-  position:absolute;
-  top:15%;
-  left:35%;
-  z-index:6;
-  float:left;
-  margin:-2% 0px 0px -150px;
-  width:700px;
-  color:#888888;
-  line-height:22px;
-  padding:15px;
-  border-radius:5px;
-  background:#ffffff;
-  border:1px solid #888888;
-  box-shadow:5px 5px 10px 0px rgba(0,0,0,0.22);
+
+/**
+ * ===========================
+ *          Modal
+ * ===========================
+ */
+
+.btnOpcion{
+  border: none;
+  margin: 0px 0px 10px 0px;
+  cursor: pointer;
 }
 
-#modal{
-  position:fixed;
-  top:0px;
-  left:0px;
-  z-index:5;
-  float:left;
-  width:100%;
-  height:100%;
-  background:rgb(0 0 0 / 69%);
-  display:none;
-  opacity:0;
+.modal-dialog{
+  max-width: 600px;
 }
 
-#modal > a{
-  position:fixed;
-  top:0px;
-  left:0px;
-  z-index:1;
-  float:left;
-  width:100%;
-  height:100%;
+.modal-content{
+  width: 95%;
 }
 
-:target{
-  display:block!important;
-  opacity:1!important;
-}
-
-#modalContent > a{
-  position:absolute;
-  top:-4px;
-  right:-4px;
-  color: #fff;
-  border-radius:2px;
-  background:#0066cceb;
-  padding:10px;
-  font-size: 30px;
-  text-decoration: none;
-}
+.text{
+  margin-top: revert;
+} 

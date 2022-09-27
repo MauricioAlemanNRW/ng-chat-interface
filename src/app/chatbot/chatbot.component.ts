@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { BotResponseService } from '../services/bot-response.service';
-import { map } from 'rxjs';
 
 @Component({
   selector: 'app-chatbot',
-  templateUrl: './chatbot.component.html'
+  templateUrl: './chatbot.component.html',
+  styleUrls: ['./chatbot.component.css']
 })
 export class ChatbotComponent implements OnInit {
 
@@ -19,19 +19,36 @@ export class ChatbotComponent implements OnInit {
 
   // Diccionario de preguntas y respuestas predefinidas
   respuestas = new Map([
-    ['hola', { mensaje: "👋🤖 Hola soy NumRobot, ¿en qué puedo ayudarte?", opciones: ["Iniciar sesión", "✋Quiero ser comercializador"] }],
+    ['hola', { mensaje: "👋 Hola soy Habbi 🤖, el Bot de HA Bicicletas!", redireccionar:"inicio" }],
+    ['inicio', { mensaje: "¿en qué puedo ayudarte?", opciones: ["👨🏻‍💻Iniciar sesión", "✋Quiero ser comercializador"] }],
 
-    // imagenes
+    ['Recuperar usuario', { mensaje: "Por favor, sigue los siguientes pasos: ⬇️", redireccionar: "Recuperar usuario paso1" }],
+    ['Recuperar usuario paso1', { mensaje: "Haga clic sobre '¿Olvidó su usuario?'", img: "assets/chatbotImagenes/olvidosu usuario.png", redireccionar: "Recuperar usuario paso2"}],
+    ['Recuperar usuario paso2', { mensaje: "Ingrese su correo electrónico asociado a su cuenta y haga clic en el botón enviar!", img: "assets/chatbotImagenes/confirmar olvido de usuario.png", redireccionar: "Recuperar usuario paso3"}],
+    ['Recuperar usuario paso3', { mensaje: "Revise su correo electrónico. Recibirá instrucciones para recordar su usuario👨🏻‍💻", redireccionar: "Preguntar si necesita más ayuda"}],
+    
     ['Recuperar contraseña', { mensaje: "Por favor, sigue los siguientes pasos: ⬇️", redireccionar: "Recuperar contraseña paso1" }],
-    ['Recuperar contraseña paso1', { mensaje: "Da click en el vinculo 'Olvidó su contraseña': ⬇️", img: "assets/chatbotImagenes/recuperarcontraseña1.jpg", redireccionar: "Recuperar contraseña paso2" }],
-    ['Recuperar contraseña paso2', { mensaje: "Ingrese el correo asociado a su usuario y hagaclic en el botón 'Enviar'", img: "assets/chatbotImagenes/recuperarcontraseña2.png" }],
-
-    ['quiero vender', { mensaje: "Nos alegra que estés aquí 🤠 Dejanos tus datos en el siguiente formulario para comunicarnos contigo ⬇️", enlace: "https://habicicletas.com/quieres-ser-comercializador/" }],
-    ['✋Quiero ser comercializador', { mensaje: "Nos alegra que estés aquí 🤠 Dejanos tus datos en el siguiente formulario para comunicarnos contigo ⬇️", enlace: "https://habicicletas.com/quieres-ser-comercializador/" }],
-    ['Iniciar sesión', { mensaje: "Qué deseas hacer?", opciones: ["Registrarme", "Recuperar usuario", "Recuperar contraseña"] }],
+    ['Recuperar contraseña paso1', { mensaje: "Da click en el vinculo 'Olvidó su contraseña': ⬇️", img: "assets/chatbotImagenes/recuperarcontraseña1.jpg", redireccionar: "Recuperar contraseña paso2"}],
+    ['Recuperar contraseña paso2', { mensaje: "Ingrese el correo asociado a su usuario y haga clic en el botón 'Enviar'", img: "assets/chatbotImagenes/recuperarcontraseña2.png", redireccionar: "Recuperar contraseña paso3"}],
+    ['Recuperar contraseña paso3', { mensaje: "Revise su correo electrónico. Recibirá instrucciones para restablecer su contraseña 🔐", redireccionar: "Preguntar si necesita más ayuda"}],
+    
+    ['Registrarme', {mensaje: "Por favor, sigue los siguientes pasos: ⬇️", redireccionar: "Registrarme paso1"}],
+    ['Registrarme paso1', { mensaje: "Si es primera vez que ingresas al portal debes crear una cuenta haciendo clic en 'Registrarse'", img: "assets/chatbotImagenes/boton registrase.jpg", redireccionar: "Registrarme paso2"}],
+    ['Registrarme paso2', { mensaje: "Luego diligencia el formulario con tus datos y has clic en el botón verde para enviarlos", img: "assets/chatbotImagenes/registrarse.png", redireccionar: "Registrarme paso3"}],
+    ['Registrarme paso3', { mensaje: "Perfecto!👌 Ahora solo debes esperar que en las próximas horas un administrador valide tus datos ✓", redireccionar: "Registrarme paso4"}],
+    ['Registrarme paso4', { mensaje: "Recibirás una notificación en tu correo electrónico  ✉", redireccionar: "Preguntar si necesita más ayuda"}],
+    
+    ['Preguntar si necesita más ayuda', { mensaje: "¿Necesitas ayuda con algo más?😊", opciones: ["Si, una cosa más!", "No, muchas gracias!"]}],
+    ['Si, una cosa más!', { mensaje: "¿🤖Con todo gusto, por favor dime", redireccionar:"inicio"}],
+    ['No, muchas gracias!', { mensaje: "Ha sido un placer, estaré cerca en caso de que necesites mi ayuda👍"}],
+    
+    ['quiero vender', { mensaje: "Que buena decisión 👏🏻, dejanos tus datos en el siguiente formulario para comunicarnos contigo ⬇️", enlace: "https://habicicletas.com/quieres-ser-comercializador/" }],
+    ['✋Quiero ser comercializador', { mensaje: "Que buena decisión 👏🏻, dejanos tus datos en el siguiente formulario para comunicarnos contigo ⬇️", enlace: "https://habicicletas.com/quieres-ser-comercializador/" }],
+    ['👨🏻‍💻Iniciar sesión', { mensaje: "Qué deseas hacer?", opciones: ["Registrarme", "Recuperar usuario", "Recuperar contraseña"] }],
     ['gracias', { mensaje: "Con gusto 👌" }],
+    ['ok', { mensaje: "👍"}],
     ['muchas gracias', { mensaje: "Ha sido un placer 👌" }],
-    ['chao', { mensaje: "Hasta pronto 👋" }]
+    ['chao', { mensaje: "Fue un placer, hasta luego 👋" }]
   ]);
 
   constructor(private botResponseService: BotResponseService) { }
@@ -41,7 +58,7 @@ export class ChatbotComponent implements OnInit {
   }
 
   chatInit(selector: string) {
-    document.addEventListener('DOMContentLoaded', () => {
+    // document.addEventListener('DOMContentLoaded', () => {
       if (!window.LIVE_CHAT_UI) {
         let chat: any = document.querySelector(selector);
         let toggles: any = chat.querySelectorAll('.toggle')
@@ -91,7 +108,7 @@ export class ChatbotComponent implements OnInit {
         // activar chat 
         window.LIVE_CHAT_UI = true
       }
-    })
+    // })
 
   }
 
@@ -166,23 +183,33 @@ export class ChatbotComponent implements OnInit {
 
       if (msg.img) {
 
-        const linkModal = document.createElement("a");
-        linkModal.setAttribute("href", "#modal")
-        
-        
+        const btnModal = document.createElement("div");
+        btnModal.setAttribute("type", "button")
+        btnModal.setAttribute("data-toggle", "modal")
+        btnModal.setAttribute("data-target", "#exampleModalCenter")
+        btnModal.setAttribute("class", "btnOpcion");
+        // cambiar imagen del modal por la seleccionada
+        btnModal.addEventListener("click",(e)=>{
+          const element = e.target as HTMLTextAreaElement;
+          const src=element.getAttribute("src");
+          const imgModal = document.getElementById("imgModal");
+          imgModal?.setAttribute("src",src?src:""); 
+        })
         
         const imgRes = document.createElement("img");
         imgRes.setAttribute("src", msg.img);
         imgRes.setAttribute("width", "100%");
         
-        linkModal.appendChild(imgRes)
-        this.insertIntoChat(linkModal);
+        btnModal.appendChild(imgRes)
+        this.insertIntoChat(btnModal);
       }
 
       if (msg.redireccionar) {
+        // colocar animación de cargando
+        this.setLoading(2000);
         setTimeout(() => {
           this.redireccionar(msg)
-        }, 3000);
+        }, 5000);
       }
 
     } else {
@@ -198,13 +225,11 @@ export class ChatbotComponent implements OnInit {
     //Generar otras replicas
     let res = this.getBotResponse(msg.redireccionar);
 
-    // colocar animación de cargando
-    this.setLoading(2000);
+    
     
     setTimeout(() => {
       this.generateParrafo(res, "reply");
     }, 3000);
-    (<HTMLInputElement>document.getElementsByClassName('chat-app_content')[0]).scrollTop = (<HTMLInputElement>document.getElementsByClassName('messages')[0]).offsetHeight
   }
 
   // insertar elemento en la conversacion
@@ -234,8 +259,6 @@ export class ChatbotComponent implements OnInit {
 
   };
 
-
-
   // colocar y quitar animación de escribiendo / cargando
   setLoading(segundos: any) {
     let loadding = document.createElement("div");
@@ -256,7 +279,10 @@ export class ChatbotComponent implements OnInit {
   }
   deleteLoading() {
     let fakeMessage = document.querySelector("#fakeMessage");
-    fakeMessage?.remove();
+    if(fakeMessage){
+      fakeMessage.remove();
+    }
+   
   }
 
 }

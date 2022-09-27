@@ -1,3 +1,4 @@
+
 <div id="chat-app" class="chat-app">
 
   <div class="chat-app_toggle toggle">
@@ -11,19 +12,19 @@
 
   <div class="chat-app_box">
     <div class="chat-app_header">
-
       <div class="close"></div>
-
+      
       <div class="branding">
+        
         <div class="avatar is-online">
           <img
-            src="https://image.freepik.com/vecteurs-libre/icone-robot-conception-signe-bot-notion-symbole-chatbot-service-assistance-vocale-bot-support-ligne-bot-stock-illustration-vectorielle_100456-34.jpg"
+            src="../../../assets/chatbotImagenes/chatbot_icon.png"
             alt="">
         </div>
 
         <div class="content">
-          <p class="title">ChatBot</p>
-          <p class="subtitle">Ask me anything, I am here to help you.</p>
+          <p class="title">Habbi Bot</p>
+          <p class="subtitle">en linea</p>
         </div>
 
       </div>
@@ -32,12 +33,7 @@
 
     <div class="chat-app_content">
       <div class="messages" id="box_message">
-
-        <!-- <div class="message reply">
-            <p class="text">👋🤖 Hola, ¿en qué puedo ayudarte?</p>
-          </div> -->
-
-
+        <!-- los mensajes se insertan aquí -->
       </div>
     </div>
 
@@ -48,10 +44,21 @@
   </div>
 </div>
 
-<div id="modal">
-  <a href="#cerrar"></a>
-    <div id="modalContent">
-      <a href="#cerrar">X</a>
-       <img src="assets/chatbotImagenes/recuperarcontraseña2.png" alt="" width="100%">
+<!-- Modal para ampliar las imagenes -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img src="" id="imgModal" alt="" width="100%">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
     </div>
+  </div>
 </div>
