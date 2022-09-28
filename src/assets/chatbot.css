@@ -8,11 +8,11 @@
 
 .chat-app {
   z-index: 10000;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.25;
   font-family: "Roboto", sans-serif;
   height: 595px;
-  width: 360px;
+  width: 330px;
   position: fixed;
   bottom: 30px;
   right: 22px;
@@ -41,7 +41,7 @@
 .chat-app_toggle {
   z-index: 5;
   position: absolute;
-  bottom: 0.75em;
+  bottom: 1.7em;
   right: 0.75em;
   height: 64px;
   width: 64px;
@@ -105,7 +105,7 @@
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   position: relative;
-  height: 600px;
+  height: 570px;
   display: flex;
   flex-direction: column;
   background: white;
@@ -408,6 +408,7 @@
 }
 
 .chat-app.is-active .chat-app_box {
+  top: 10px;
   opacity: 1;
   visibility: visible;
   pointer-events: unset;
@@ -612,6 +613,9 @@
  * ===========================
  */
 
+ .modal{
+  z-index: 2147483647 !important;
+ }
 .btnOpcion{
   border: none;
   margin: 0px 0px 10px 0px;
