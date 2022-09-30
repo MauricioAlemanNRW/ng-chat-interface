@@ -136,7 +136,10 @@
   transition: all 0.3s;
   opacity: 0.5;
 }
-
+.chat-app_header .sound {
+  opacity: 0.4;
+  cursor: pointer;
+}
 .chat-app_header .close:after,
 .chat-app_header .close:before {
   content: "";

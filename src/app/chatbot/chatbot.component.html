@@ -24,7 +24,10 @@
 
         <div class="content">
           <p class="title">Habbi Bot</p>
-          <p class="subtitle">en linea</p>
+          <p class="subtitle">en linea
+            <i class="fas fa-volume-up sound" *ngIf="!mute" (click)="changeMuteState()"></i>
+            <i class="fas fa-volume-mute sound" *ngIf="mute" (click)="changeMuteState()"></i>
+          </p>
         </div>
 
       </div>

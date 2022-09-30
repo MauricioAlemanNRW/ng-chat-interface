@@ -10,12 +10,19 @@ export class ChatbotComponent implements OnInit {
 
   //sound
   sound = new Audio('./assets/sonido.mp3')
+  mute:boolean=false;
+  changeMuteState(){
+    this.mute=!this.mute!;
+  }
+  reproducir() {
+    if(this.mute==false){
+      this.sound.play();
+    }
+  }
 
   //mensaje inicial
   mensajeInicial=false;
-  reproducir() {
-    this.sound.play();
-  }
+  
 
   // Diccionario de preguntas y respuestas predefinidas
   respuestas = new Map([
